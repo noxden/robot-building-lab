@@ -24,7 +24,7 @@ public class RobotController : MonoBehaviour
         currentAcceleration = acceleration * Input.GetAxis("Vertical");
 
         // brake old input
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetAxis("Vertical") == 0)
         {
             currentBrakeForce = breakingForce;
         }
@@ -52,7 +52,6 @@ public class RobotController : MonoBehaviour
             wheel.rotationSpeed = Mathf.Clamp(wheel.rotationSpeed, driveBackSpeed, maxRotationSpeed);
             // update visual
             UpdateWheel(wheel, wheel.transform);
-
         }
     }
     private void UpdateAccelerationWheels()
@@ -65,8 +64,6 @@ public class RobotController : MonoBehaviour
             wheel.motorTorque = currentAcceleration;
             // update visual
             UpdateWheel(wheel, wheel.transform);
-
-
         }
     }
 
