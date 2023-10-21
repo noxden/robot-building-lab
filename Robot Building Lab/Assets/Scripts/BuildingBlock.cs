@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Todo: Sometimes unpredicted behaviour when attaching / detaching new building blocks
+[RequireComponent(typeof(Rigidbody))]
 public class BuildingBlock : MonoBehaviour
 {
+    private new Rigidbody rigidbody;
     [SerializeField] public bool isCoreBlock = false;
-    [SerializeField] private List<Connector> activeConnections = new();  //< Connections to core
+    private List<Connector> activeConnections = new();  //< Connections to core
 
     [SerializeField] public bool isSteeringWheel = false;
     [SerializeField] public bool isPoweredWheel = false;
+
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
 
     public bool GetIsAttachedToCore()
     {
@@ -19,13 +26,11 @@ public class BuildingBlock : MonoBehaviour
     /// <returns>
     /// Success of the operation. False if connector was already registered as active connection.
     /// </returns>
-    public bool AddActiveConnection(Connector ownedConnector)
+    public bool AddCoreConnection(Connector ownedConnector)
     {
         if (!activeConnections.Contains(ownedConnector))
         {
             activeConnections.Add(ownedConnector);
-
-            transform.SetParent(ownedConnector.attachedConnector.gameObject.transform, true);
 
             if (isSteeringWheel)
             {
@@ -36,20 +41,19 @@ public class BuildingBlock : MonoBehaviour
                 transform.root.GetComponent<RobotController>().AccelerationWheels.Add(gameObject.GetComponentInChildren<WheelCollider>());
             }
 
-            GetComponent<Rigidbody>().isKinematic = true;
-            // owner.GetComponent<Rigidbody>().useGravity = false;
-            // owner.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Attach(ownedConnector.attachedConnector);
 
             return true;
         }
 
+        Debug.LogWarning($"{this.name}:{ownedConnector.name} is already registered as an active core connection.");
         return false;
     }
 
     /// <returns>
     /// Success of the operation. False if connector was not registered as active connection previously.
     /// </returns>
-    public bool RemoveActiveConnection(Connector connector)
+    public bool RemoveCoreConnection(Connector connector)
     {
         bool success = activeConnections.Remove(connector);
         if (activeConnections.Count == 0)
@@ -63,13 +67,26 @@ public class BuildingBlock : MonoBehaviour
                 transform.root.GetComponent<RobotController>().AccelerationWheels.Remove(gameObject.GetComponentInChildren<WheelCollider>());
             }
 
-            transform.SetParent(null, true);
-            GetComponent<Rigidbody>().isKinematic = false;
-            // owner.GetComponent<Rigidbody>().useGravity = true;
-            // owner.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Detach();
         }
 
         return success;
+    }
+
+    private void Attach(Connector targetConnector)
+    {
+        transform.SetParent(targetConnector.gameObject.transform, true);
+        // rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
+        rigidbody.velocity = Vector3.zero;
+    }
+
+    private void Detach()
+    {
+        transform.SetParent(null, true);
+        // rigidbody.isKinematic = false;
+        rigidbody.useGravity = true;
+        rigidbody.velocity = Vector3.zero;
     }
 
     private void OnDrawGizmos()
