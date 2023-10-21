@@ -115,10 +115,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8676044776395450730}
   - component: {fileID: 1155068991118020991}
+  - component: {fileID: -1861607720251849237}
   - component: {fileID: 7930114794059218353}
   - component: {fileID: 2413531627694795529}
   m_Layer: 0
-  m_Name: BuildingBlock
+  m_Name: CoreBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,6 +174,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &-1861607720251849237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8662705815476430712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efd7edfbabcb62241ab2781e9796a88b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SteeringWheels: []
+  AccelerationWheels: []
+  acceleration: 500
+  breakingForce: 300
+  maxTurnAngle: 15
+  maxRotationSpeed: 4000
+  driveBackSpeed: -1000
+  RStick: {fileID: 2012035084406793053, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!114 &7930114794059218353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4158d47266adfcf4d865acfbc584072d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCoreBlock: 0
+  isCoreBlock: 1
   activeConnections: []
   isSteeringWheel: 0
   isPoweredWheel: 0

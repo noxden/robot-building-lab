@@ -7,20 +7,14 @@ public class Connector : MonoBehaviour
 {
     private static Vector3 colliderSize = new Vector3(0.02f, 0.02f, 0.02f);
     private new BoxCollider collider = null;
-    [SerializeField] private BuildingBlock owner;
+    [SerializeField] public BuildingBlock owner;
     [SerializeField] public Connector attachedConnector = null;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         owner = GetComponentInParent<BuildingBlock>();
         CreateCollider();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        collider.size = colliderSize;
     }
 
     private void CreateCollider()
@@ -29,17 +23,23 @@ public class Connector : MonoBehaviour
         if (!collider)
             collider = gameObject.AddComponent<BoxCollider>();
 
+        collider.size = colliderSize;
         collider.isTrigger = true;
     }
 
     private void ConnectTo(Connector otherConnector)
     {
+        if (attachedConnector != null)
+            return;
+
         attachedConnector = otherConnector;
         Debug.Log($"Connected [{owner.name}:{this.name}] to [{otherConnector.owner.name}:{otherConnector.name}]");
 
         if (attachedConnector.owner.GetIsAttachedToCore())
         {
-            owner.AddActiveConnection(this);
+            owner.AddCoreConnection(this);
+            // owner.transform.SetParent(attachedConnector.gameObject.transform, true);
+            // owner.GetComponent<Rigidbody>().isKinematic = true;
         }
     }
 
@@ -50,7 +50,11 @@ public class Connector : MonoBehaviour
 
         Connector connectorToDisconnectFrom = attachedConnector;
         attachedConnector = null;
-        owner.RemoveActiveConnection(this);
+
+        owner.RemoveCoreConnection(this);
+        // owner.transform.SetParent(null, true);
+        // owner.GetComponent<Rigidbody>().isKinematic = false;
+
         Debug.Log($"Disconnected [{owner.name}:{this.name}] from [{connectorToDisconnectFrom.owner.name}:{connectorToDisconnectFrom.name}]");
         connectorToDisconnectFrom.DisconnectFromAttached();
     }
@@ -70,6 +74,7 @@ public class Connector : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        // Debug.Log($"Called OnTriggerExit on {this.name}");
         if (other.gameObject.TryGetComponent<Connector>(out Connector otherConnector))
         {
             DisconnectFromAttached();
@@ -82,12 +87,12 @@ public class Connector : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (!attachedConnector)
-        Gizmos.color = Color.blue;
+            Gizmos.color = Color.blue;
         else
-        Gizmos.color = Color.cyan;
+            Gizmos.color = Color.cyan;
         Gizmos.DrawCube(transform.position, colliderSize);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 0.3f * transform.localScale.magnitude));
+        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 0.03f));
     }
 }
