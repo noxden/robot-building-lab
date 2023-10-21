@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RobotController : MonoBehaviour
 {
-    [SerializeField] private List<WheelCollider> SteeringWheels;
-    [SerializeField] private List<WheelCollider> AccelerationWheels;
+    [SerializeField] public List<WheelCollider> SteeringWheels;
+    [SerializeField] public List<WheelCollider> AccelerationWheels;
 
     [SerializeField] private float acceleration = 500f;
     [SerializeField] private float breakingForce = 300f;
@@ -18,13 +19,16 @@ public class RobotController : MonoBehaviour
     private float currentBrakeForce = 0f;
     private float currentTurnAngle = 0f;
 
+    [SerializeField] InputActionReference RStick;
+    private void OnEnable()
+    {
+    }
     private void FixedUpdate()
     {
         // acceleration old input
-        currentAcceleration = acceleration * Input.GetAxis("Vertical");
-
+        currentAcceleration = acceleration * RStick.action.ReadValue<Vector2>().y ;
         // brake old input
-        if (Input.GetAxis("Vertical") == 0)
+        if (RStick.action.ReadValue<Vector2>().x == 0)
         {
             currentBrakeForce = breakingForce;
         }
@@ -34,7 +38,7 @@ public class RobotController : MonoBehaviour
         }
 
         // steering
-        currentTurnAngle = maxTurnAngle * Input.GetAxis("Horizontal");
+        currentTurnAngle = maxTurnAngle * RStick.action.ReadValue<Vector2>().x;
 
         UpdateSteeringWheels();
         UpdateAccelerationWheels();
