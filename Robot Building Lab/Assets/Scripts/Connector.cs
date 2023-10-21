@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Todo: Multi-Path Connections to the core are still not possible
 public class Connector : MonoBehaviour
 {
     private static Vector3 colliderSize = new Vector3(0.2f, 0.2f, 0.2f);
     private new BoxCollider collider = null;
     [SerializeField] private BuildingBlock owner;
-    [SerializeField] private Connector attachedConnector = null;
+    [SerializeField] public Connector attachedConnector = null;
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +37,9 @@ public class Connector : MonoBehaviour
         attachedConnector = otherConnector;
         Debug.Log($"Connected [{owner.name}:{this.name}] to [{otherConnector.owner.name}:{otherConnector.name}]");
 
-        if (attachedConnector.owner.isAttachedToCore())
+        if (attachedConnector.owner.GetIsAttachedToCore())
         {
-            owner.transform.SetParent(attachedConnector.gameObject.transform, true);
-            owner.GetComponent<Rigidbody>().isKinematic = true;
-            // owner.GetComponent<Rigidbody>().useGravity = false;
-            // owner.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            owner.AddActiveConnection(this);
         }
     }
 
@@ -50,13 +48,9 @@ public class Connector : MonoBehaviour
         if (attachedConnector == null)
             return;
 
-        owner.transform.SetParent(null, true);
-        owner.GetComponent<Rigidbody>().isKinematic = false;
-        // owner.GetComponent<Rigidbody>().useGravity = true;
-        // owner.GetComponent<Rigidbody>().velocity = Vector3.zero;
-
         Connector connectorToDisconnectFrom = attachedConnector;
         attachedConnector = null;
+        owner.RemoveActiveConnection(this);
         Debug.Log($"Disconnected [{owner.name}:{this.name}] from [{connectorToDisconnectFrom.owner.name}:{connectorToDisconnectFrom.name}]");
         connectorToDisconnectFrom.DisconnectFromAttached();
     }
@@ -87,7 +81,10 @@ public class Connector : MonoBehaviour
     /// </summary>
     private void OnDrawGizmos()
     {
+        if (!attachedConnector)
         Gizmos.color = Color.blue;
+        else
+        Gizmos.color = Color.cyan;
         Gizmos.DrawCube(transform.position, colliderSize);
 
         Gizmos.color = Color.red;
