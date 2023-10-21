@@ -5,7 +5,7 @@ using UnityEngine;
 //Todo: Multi-Path Connections to the core are still not possible
 public class Connector : MonoBehaviour
 {
-    private static Vector3 colliderSize = new Vector3(0.2f, 0.2f, 0.2f);
+    private static Vector3 colliderSize = new Vector3(0.02f, 0.02f, 0.02f);
     private new BoxCollider collider = null;
     [SerializeField] private BuildingBlock owner;
     [SerializeField] public Connector attachedConnector = null;
@@ -88,6 +88,6 @@ public class Connector : MonoBehaviour
         Gizmos.DrawCube(transform.position, colliderSize);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 0.3f));
+        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 0.3f * transform.localScale.magnitude));
     }
 }
