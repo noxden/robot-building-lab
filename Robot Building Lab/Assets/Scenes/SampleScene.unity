@@ -128,11 +128,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9130674521892242416, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
   m_PrefabInstance: {fileID: 192687503}
   m_PrefabAsset: {fileID: 0}
---- !u!146 &51511073 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 7216343597925675731, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
-  m_PrefabInstance: {fileID: 192687503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &192687503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -470,16 +465,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SteeringWheels:
-  - {fileID: 2017968483}
-  - {fileID: 51511073}
+  - {fileID: 0}
+  - {fileID: 0}
   AccelerationWheels:
-  - {fileID: 1777055738}
-  - {fileID: 1461802784}
+  - {fileID: 0}
+  - {fileID: 0}
   acceleration: 2000
   breakingForce: 1000
   maxTurnAngle: 25
   maxRotationSpeed: 700
   driveBackSpeed: -500
+  RStick: {fileID: 0}
 --- !u!4 &800901773
 Transform:
   m_ObjectHideFlags: 0
@@ -966,19 +962,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9130674521892242416, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
   m_PrefabInstance: {fileID: 1196986878}
   m_PrefabAsset: {fileID: 0}
---- !u!146 &1461802784 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 7216343597925675731, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
-  m_PrefabInstance: {fileID: 1196986878}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1777055737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9130674521892242416, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
-  m_PrefabInstance: {fileID: 956362380}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &1777055738 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 7216343597925675731, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
   m_PrefabInstance: {fileID: 956362380}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1817329099
@@ -1090,11 +1076,6 @@ Transform:
 --- !u!4 &2017968482 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9130674521892242416, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
-  m_PrefabInstance: {fileID: 1425406751}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &2017968483 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 7216343597925675731, guid: 5e6d978f0c8e5fb4493ca46a8423b8ca, type: 3}
   m_PrefabInstance: {fileID: 1425406751}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
