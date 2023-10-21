@@ -20,14 +20,20 @@ public class BuildingBlock : MonoBehaviour
 
     public bool GetIsAttachedToCore()
     {
-        return transform.root.GetComponent<BuildingBlock>().isCoreBlock;
+        if (transform.root.TryGetComponent(out BuildingBlock root))
+            return root.isCoreBlock;
+        else
+            return false;   //< If the root of this building block is (for whatever reason) not a building block
     }
 
     /// <returns>
     /// Success of the operation. False if connector was already registered as active connection.
     /// </returns>
-    public bool AddCoreConnection(Connector ownedConnector)
+    public bool RegisterCoreConnection(Connector ownedConnector)
     {
+        if (isCoreBlock)
+            return false;
+
         if (!activeConnections.Contains(ownedConnector))
         {
             activeConnections.Add(ownedConnector);
