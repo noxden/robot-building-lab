@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 
 public class RobotController : MonoBehaviour
 {
-    [SerializeField] private List<WheelCollider> SteeringWheels;
-    [SerializeField] private List<WheelCollider> AccelerationWheels;
+    [SerializeField] public List<WheelCollider> SteeringWheels;
+    [SerializeField] public List<WheelCollider> AccelerationWheels;
 
     [SerializeField] private float acceleration = 500f;
     [SerializeField] private float breakingForce = 300f;
