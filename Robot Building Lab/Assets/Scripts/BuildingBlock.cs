@@ -6,22 +6,10 @@ using UnityEngine;
 public class BuildingBlock : MonoBehaviour
 {
     [SerializeField] public bool isCoreBlock = false;
-    private List<Connector> activeConnections = new();  //< Connections to core
+    [SerializeField] private List<Connector> activeConnections = new();  //< Connections to core
 
     [SerializeField] public bool isSteeringWheel = false;
     [SerializeField] public bool isPoweredWheel = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        GetIsAttachedToCore();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public bool GetIsAttachedToCore()
     {
@@ -84,5 +72,12 @@ public class BuildingBlock : MonoBehaviour
         return success;
     }
 
-
+    private void OnDrawGizmos()
+    {
+        if (GetIsAttachedToCore())
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(transform.position, 0.02f * transform.localScale.magnitude);
+        }
+    }
 }
